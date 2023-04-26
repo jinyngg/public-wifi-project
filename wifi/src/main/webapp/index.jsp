@@ -1,3 +1,5 @@
+<%@ page import="com.zerobase.mission.common.JDBCUtil" %>
+<%@ page import="com.zerobase.mission.history.impl.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,18 +18,22 @@
 		| <a href="">즐겨 찾기 보기</a> 
 		| <a href="">즐겨 찾기 그룹 관리</a>
 	</div>
-
+ 
 	<br/>
 	
 	<div>
 		<!-- @TODO method = "get" or "post"-->
-		<form action="<%= request.getContextPath() %>" method="post">
-			LAT: <input type="text" id="lat" value="0.0">
-			, LNT: <input type="text" id="lnt" value="0.0">
+		<form action="list.jsp" method="post" id="location">
+			LAT: <input type="text" id="lat" name="lat" value="0.0">
+			, LNT: <input type="text" id="lnt" name="lnt" value="0.0">
 			<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-			<button type="button" onclick="">근처 WIFI 정보보기</button>
+			<button onclick="submitLocation()">근처 WIFI 정보보기</button>
+		<!-- 	<input type="submit" onclick="submitLocation()" value = "근처 WIFI 정보보기">
+		 -->
 		</form>
 	</div>
+	
+	<br/>
 
 	<table>
 		<thead>
@@ -55,11 +61,14 @@
 		<!-- @TODO 데이터가 존재할 경우 메세지 숨김 처리 -->
 		<tbody>
 			<tr>
-				<td colspan="20" align="center"><br>위치 정보를 입력한
-					후에 조회해 주세요.<br> <br></td>
+				<td colspan="17" align="center"><br>위치 정보를 입력한 후에 조회해 주세요.</td>
 			</tr>
+			
+			
 		</tbody>
 	</table>
+	
+	<hr />
 	
 	<script>
 		function getUserLocation() {
@@ -72,12 +81,35 @@
 					var longitude = position.coords.longitude;
 					
 					document.getElementById("lat").value = latitude;
-	                document.getElementById("lnt").value = longitude;
+					document.getElementById("lnt").value = longitude;
 				})
 				
+			} else {
+				window.alert("위치를 가져올 수 없습니다.")
+			}
+		}
+		
+		function submitLocation() {
+			var lat = document.getElementById("lat").value;
+			var lnt = document.getElementById("lnt").value;
+			
+			// @TODO 위도, 경도 예외처리 필요(checkFloat())
+			if(lat == "" || lnt == "") {
+				alert("validate() 추가");
+			} else {
+				$('location').attr("action", list.jsp).submit();
 			}
 		}
 		
 	</script>
+	
+	
+	<%
+/* 	float lat = Float.parseFloat(request.getParameter("lat"));
+    float lnt = Float.parseFloat(request.getParameter("lnt"));
+    System.out.println("lat : " + lat + "lnt : " + lnt);  */
+    
+    HistoryServiceImpl historyService = new HistoryServiceImpl();
+	%>
 </body>
 </html>
