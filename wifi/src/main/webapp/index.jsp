@@ -12,8 +12,8 @@
 
 	<!-- location -->
 	<div>
-		<a href="<%= request.getContextPath() %>">홈</a> 
-		| <a href="">위치 히스토리 목록</a> 
+		<a href="index.jsp">홈</a> 
+		| <a href="history.jsp">위치 히스토리 목록</a> 
 		| <a href="">Open API 와이파이 정보 가져오기</a> 
 		| <a href="">즐겨 찾기 보기</a> 
 		| <a href="">즐겨 찾기 그룹 관리</a>
@@ -27,9 +27,7 @@
 			LAT: <input type="text" id="lat" name="lat" value="0.0">
 			, LNT: <input type="text" id="lnt" name="lnt" value="0.0">
 			<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-			<button onclick="submitLocation()">근처 WIFI 정보보기</button>
-		<!-- 	<input type="submit" onclick="submitLocation()" value = "근처 WIFI 정보보기">
-		 -->
+			<button onclick="getWifi()">근처 WIFI 정보보기</button>
 		</form>
 	</div>
 	
@@ -89,27 +87,19 @@
 			}
 		}
 		
-		function submitLocation() {
+		function getWifi() {
 			var lat = document.getElementById("lat").value;
 			var lnt = document.getElementById("lnt").value;
 			
 			// @TODO 위도, 경도 예외처리 필요(checkFloat())
-			if(lat == "" || lnt == "") {
-				alert("validate() 추가");
+			if(lat === "" || lnt === "") {
+				alert("위도 및 경도 값을 확인해주세요.");
+				/* alert("validate() 추가"); */
 			} else {
-				$('location').attr("action", list.jsp).submit();
+				$('location').submit();
 			}
 		}
-		
 	</script>
 	
-	
-	<%
-/* 	float lat = Float.parseFloat(request.getParameter("lat"));
-    float lnt = Float.parseFloat(request.getParameter("lnt"));
-    System.out.println("lat : " + lat + "lnt : " + lnt);  */
-    
-    HistoryServiceImpl historyService = new HistoryServiceImpl();
-	%>
 </body>
 </html>
