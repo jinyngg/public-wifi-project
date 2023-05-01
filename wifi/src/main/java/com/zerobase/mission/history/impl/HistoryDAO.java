@@ -77,7 +77,7 @@ public class HistoryDAO {
 	 */
 	public void delete(int HistoryId) {
 		
-		System.out.println("===> JDBC DELETE(HISTORY) 기능 처리");
+		System.out.println("===> JDBC DELETE(HistoryId) 기능 처리");
 		
 		try {
 			conn = JDBCUtil.getConnection();
@@ -97,7 +97,7 @@ public class HistoryDAO {
 	 */
 	public List<History> getHistoryList() {
 		
-		System.out.println("===> JDBC getHistoryList(HISTORY) 기능 처리");
+		System.out.println("===> JDBC getHistoryList() 기능 처리");
 		List<History> historyList = new ArrayList<>();
 		
 		try {
