@@ -16,5 +16,4 @@ public interface TbPublicWifiInfoService {
 	int getListTotalCount();
 	
 	void saveAllWifiList();
-//	void saveWifiList(List<Wifi> wifiList);
 }

@@ -122,7 +122,6 @@ public class TbPublicWifiInfoDAO {
 	 */
 	public void saveAllWifiList() {
 		
-//		WifiServiceImpl wifiService = new WifiServiceImpl();
 		wifiservice.deleteAll();
 		
 		int listTotalCount = getListTotalCount();
@@ -143,23 +142,5 @@ public class TbPublicWifiInfoDAO {
 		}
 		
 	}
-	
-//	/**
-//	 * 서울시 공공와이파이 서비스 위치 정보 리스트를 DB에 저장
-//	 */
-//	public void saveWifiList(List<Wifi> wifiList) {
-//		
-//		
-//		try {
-//			
-//			for(int i = 0; i < wifiList.size(); i++) {
-//			}
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			
-//		} 
-//		
-//	}
 	
 }

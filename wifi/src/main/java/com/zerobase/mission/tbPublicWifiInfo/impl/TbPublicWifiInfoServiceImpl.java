@@ -41,9 +41,4 @@ private static TbPublicWifiInfoDAO tbPublicWifiInfoDAO;
 		tbPublicWifiInfoDAO.saveAllWifiList();
 	}
 
-//	@Override
-//	public void saveWifiList(List<Wifi> wifiList) {
-//		tbPublicWifiInfoDAO.saveWifiList(wifiList);
-//	}
-
 }

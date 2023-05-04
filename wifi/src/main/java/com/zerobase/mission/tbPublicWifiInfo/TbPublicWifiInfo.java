@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class TbPublicWifiInfo {
-
+ 
 	@SerializedName("list_total_count")
 	private int listTotalCount;
 	
