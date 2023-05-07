@@ -14,8 +14,8 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-	public void insert(History history) {
-		historyDAO.insert(history);
+	public void insertHistory(History history) {
+		historyDAO.insertHistory(history);
 	}
 
 	@Override

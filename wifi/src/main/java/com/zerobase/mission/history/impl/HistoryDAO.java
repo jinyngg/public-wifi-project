@@ -54,7 +54,7 @@ public class HistoryDAO {
 	 * 위치 히스토리 목록 삽입
 	 * @param history
 	 */
-	public void insert(History history) {
+	public void insertHistory(History history) {
 		
 		System.out.println("===> JDBC INSERT(HISTORY) 기능 처리");
 		
@@ -66,6 +66,7 @@ public class HistoryDAO {
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		} finally {
 			JDBCUtil.close(stmt, conn);
 		}
@@ -86,6 +87,7 @@ public class HistoryDAO {
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		} finally {
 			JDBCUtil.close(stmt, conn);
 		}
@@ -118,6 +120,7 @@ public class HistoryDAO {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		} finally {
 			JDBCUtil.close(rs, stmt, conn);
 		}

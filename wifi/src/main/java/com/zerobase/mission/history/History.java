@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 public class History {
 
-	private int historyId;	// key
-	private double lat;		// 경도
-	private double lnt;		// 위도
-	private Timestamp regDate; 	// 조회일자
-	private String delYN;  // 삭제여부
+	private int historyId;
+	private double lat;
+	private double lnt;
+	private Timestamp regDate;
+	private String delYN;
 	
 	public History() {
 		
