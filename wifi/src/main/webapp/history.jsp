@@ -8,6 +8,7 @@
 <html>
 <head>
 	<title>와이파이 정보 구하기</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body>
@@ -64,7 +65,7 @@
 				<td><%= history.getLnt() %></td>
 				<td><%= DateUtil.timestampToString(history.getRegDate()) %></td>
 				
-				<td><button onclick="deleteHistory('<%= history.getHistoryId() %>')"><%= history.getHistoryId() %> 삭제</button></td>
+				<td><button onclick="deleteHistory('<%= history.getHistoryId() %>')">삭제</button></td>
 				
 				<%-- 
 				java.sql.Date 형식으로 가져올 경우, 시 분 초를 가져오지 못하여 수정
