@@ -28,4 +28,9 @@ public class HistoryServiceImpl implements HistoryService {
 		return historyDAO.getHistoryList();
 	}
 
+	@Override
+	public History getlatestHistory() {
+		return historyDAO.getlatestHistory();
+	}
+
 }

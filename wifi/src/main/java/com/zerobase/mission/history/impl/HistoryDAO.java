@@ -37,6 +37,12 @@ public class HistoryDAO {
 			+ " WHERE DEL_YN = 'N'"
 			+ " ORDER BY HISTORY_NO DESC";
 	
+	private final String HISTORY_LATEST_INFO = 
+			"SELECT HISTORY_NO, LAT, LNT, REGDATE, DEL_YN"
+			+ " FROM HISTORY"
+			+ " ORDER BY HISTORY_NO DESC"
+			+ " LIMIT 1";
+	
 	private static HistoryDAO historyDAO;
 	
 	/**
@@ -126,5 +132,38 @@ public class HistoryDAO {
 		}
 		
 		return historyList;
+	}
+	
+	/**
+	 * 가장 최근 위치 히스토리 목록 조회
+	 * @return
+	 */
+	public History getlatestHistory() {
+		System.out.println("===> JDBC getlatestHistory() 기능 처리");
+		History history = null;
+		
+		try {
+			conn = JDBCUtil.getConnection();
+			stmt = conn.prepareStatement(HISTORY_LATEST_INFO);
+			rs = stmt.executeQuery();
+			
+			history = new History();
+			
+			while(rs.next()) {
+				history.setHistoryId(rs.getInt("HISTORY_NO"));
+				history.setLat(rs.getFloat("LAT"));
+				history.setLnt(rs.getFloat("LNT"));
+				history.setRegDate(rs.getTimestamp("REGDATE"));
+				history.setDelYN(rs.getString("DEL_YN"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			JDBCUtil.close(rs, stmt, conn);
+		}
+		
+		return history;
 	}
 }

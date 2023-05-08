@@ -7,5 +7,6 @@ public interface HistoryService {
 	void insertHistory(History history);
 	void delete(int historyId);
 	List<History> getHistoryList();
+	History getlatestHistory();
 
 }
