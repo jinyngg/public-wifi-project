@@ -1,5 +1,8 @@
-<%@ page import="com.zerobase.mission.common.*" %>
+<%@page import="com.zerobase.mission.wifi.impl.*"%>
+<%@page import="com.zerobase.mission.wifi.*"%>
 <%@ page import="com.zerobase.mission.history.impl.*" %>
+<%@ page import="com.zerobase.mission.history.*" %>
+<%@ page import="java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -8,6 +11,28 @@
 </head>
 
 <body>
+
+	<%
+	
+	/** 
+	기능 구현
+	1. 히스토리 정보 저장
+	2. 근처 WIFI 정보 조회
+	*/
+	
+    float lat = Float.parseFloat(request.getParameter("lat"));
+    float lnt = Float.parseFloat(request.getParameter("lnt"));
+    final int limit = 20;
+    
+    HistoryServiceImpl historyService = new HistoryServiceImpl();
+    History history = new History(lat, lnt);
+
+    historyService.insertHistory(history);
+    
+    WifiServiceImpl wifiService = new WifiServiceImpl();
+    List<Wifi> wifiList = wifiService.getWifiListByLocation(lat, lnt, limit);
+	%>
+
 	<h1>와이파이 정보 구하기</h1>
 
 	<!-- location -->
@@ -24,8 +49,8 @@
 	<div>
 		<!-- @TODO method = "get" or "post"-->
 		<form action="list.jsp" method="post" id="location">
-			LAT: <input type="text" id="lat" name="lat" value="0.0">
-			, LNT: <input type="text" id="lnt" name="lnt" value="0.0">
+			LAT: <input type="text" id="lat" name="lat" value="<%= lat %>">
+			, LNT: <input type="text" id="lnt" name="lnt" value="<%= lnt %>">
 			<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
 			<button onclick="getWifi()">근처 WIFI 정보보기</button>
 		</form>
@@ -56,13 +81,45 @@
 			</tr>
 		</thead>
 		
-		<!-- @TODO 데이터가 존재할 경우 메세지 숨김 처리 -->
 		<tbody>
+		
+		<%
+			if(null == wifiList || wifiList.size() == 0) {
+				
+		%>
+		
 			<tr>
 				<td colspan="17" align="center"><br>위치 정보를 입력한 후에 조회해 주세요.</td>
 			</tr>
+		<%
+			} else {
+				for(Wifi wifi : wifiList) {
+					
+		%>
 			
-			
+			<tr>
+			<td><%=wifi.getDistance()%></td>
+			<td><%=wifi.getX_SWIFI_MGR_NO()%></td>
+			<td><%=wifi.getX_SWIFI_WRDOFC()%></td>
+			<td><a href="detail.jsp?mgrNo=<%=wifi.getX_SWIFI_MGR_NO()%>"><%=wifi.getX_SWIFI_MAIN_NM()%></a></td>
+			<td><%=wifi.getX_SWIFI_ADRES1()%></td>
+			<td><%=wifi.getX_SWIFI_ADRES2()%></td>
+			<td><%=wifi.getX_SWIFI_INSTL_FLOOR()%></td>
+			<td><%=wifi.getX_SWIFI_INSTL_TY()%></td>
+			<td><%=wifi.getX_SWIFI_INSTL_MBY()%></td>
+			<td><%=wifi.getX_SWIFI_SVC_SE()%></td>
+			<td><%=wifi.getX_SWIFI_CMCWR()%></td>
+			<td><%=wifi.getX_SWIFI_CNSTC_YEAR()%></td>
+			<td><%=wifi.getX_SWIFI_INOUT_DOOR()%></td>
+			<td><%=wifi.getX_SWIFI_REMARS3()%></td>
+			<td><%=wifi.getLAT()%></td>
+			<td><%=wifi.getLNT()%></td>
+			<td><%=wifi.getWORK_DTTM()%></td>
+		</tr>
+		<%
+				}
+		}
+		%>
 		</tbody>
 	</table>
 	
