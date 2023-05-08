@@ -19,3 +19,4 @@ public class TbPublicWifiInfo {
 	@SerializedName("row")
 	private List<Wifi> wifiList;
 }
+ 
