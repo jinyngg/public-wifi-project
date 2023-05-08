@@ -1,5 +1,3 @@
-# 내 위치 기반 공공 와이파이 정보를 제공하는 웹서비스
-
 ## 필수 준수 사항
 
 ![image](https://user-images.githubusercontent.com/96164211/236808730-411c4586-7db1-4da6-a27d-ddfcc316b220.png)
