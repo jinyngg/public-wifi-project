@@ -24,13 +24,23 @@ public class WifiServiceImpl implements WifiService {
 	}
 
 	@Override
-	public List<Wifi> getWifiList() {
-		return wifiDAO.getWifiList();
+	public List<Wifi> getAllWifiList() {
+		return wifiDAO.getAllWifiList();
 	}
 
 	@Override
 	public void insertWifiList(List<Wifi> wifiList) {
 		wifiDAO.insertWifiList(wifiList);
+	}
+
+	@Override
+	public List<Wifi> getWifiListByLocation(double lat, double lnt, int limit) {
+		return wifiDAO.getWifiListByLocation(lat, lnt, limit);
+	}
+
+	@Override
+	public Wifi getWifiByMgrNo(double lat, double lnt, String MgrNo) {
+		return wifiDAO.getWifiByMgrNo(lat, lnt, MgrNo);
 	}
 
 }

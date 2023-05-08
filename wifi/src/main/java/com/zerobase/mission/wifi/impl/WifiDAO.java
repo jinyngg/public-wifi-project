@@ -48,7 +48,7 @@ public class WifiDAO {
 			"DELETE"
 			+ " FROM WIFI";
 	
-	private final String WIFI_LIST = 
+	private final String WIFI_ALL_LIST = 
 			"SELECT"
 			+ " X_SWIFI_MGR_NO"
 			+ ", X_SWIFI_WRDOFC"
@@ -67,6 +67,51 @@ public class WifiDAO {
 			+ ", LNT"
 			+ ", WORK_DTTM"
 			+ " FROM WIFI";
+	
+	private final String WIFI_LIST = 
+			"SELECT"
+			+ "(6371*ACOS(COS(RADIANS(?))*COS(RADIANS(LAT))*COS(RADIANS(LNT)-RADIANS(?))+SIN(RADIANS(?))*SIN(RADIANS(LAT)))) AS DISTANCE"
+			+ ", X_SWIFI_MGR_NO"
+			+ ", X_SWIFI_WRDOFC"
+			+ ", X_SWIFI_MAIN_NM"
+			+ ", X_SWIFI_ADRES1"
+			+ ", X_SWIFI_ADRES2"
+			+ ", X_SWIFI_INSTL_FLOOR"
+			+ ", X_SWIFI_INSTL_TY"
+			+ ", X_SWIFI_INSTL_MBY"
+			+ ", X_SWIFI_SVC_SE"
+			+ ", X_SWIFI_CMCWR"
+			+ ", X_SWIFI_CNSTC_YEAR"
+			+ ", X_SWIFI_INOUT_DOOR"
+			+ ", X_SWIFI_REMARS3"
+			+ ", LAT"
+			+ ", LNT"
+			+ ", WORK_DTTM"
+			+ " FROM WIFI"
+			+ " ORDER BY DISTANCE ASC"
+			+ " LIMIT ?";
+	
+	private final String WIFI_DETAIL = 
+			"SELECT"
+			+ "(6371*ACOS(COS(RADIANS(?))*COS(RADIANS(LAT))*COS(RADIANS(LNT)-RADIANS(?))+SIN(RADIANS(?))*SIN(RADIANS(LAT)))) AS DISTANCE"
+			+ ", X_SWIFI_MGR_NO"
+			+ ", X_SWIFI_WRDOFC"
+			+ ", X_SWIFI_MAIN_NM"
+			+ ", X_SWIFI_ADRES1"
+			+ ", X_SWIFI_ADRES2"
+			+ ", X_SWIFI_INSTL_FLOOR"
+			+ ", X_SWIFI_INSTL_TY"
+			+ ", X_SWIFI_INSTL_MBY"
+			+ ", X_SWIFI_SVC_SE"
+			+ ", X_SWIFI_CMCWR"
+			+ ", X_SWIFI_CNSTC_YEAR"
+			+ ", X_SWIFI_INOUT_DOOR"
+			+ ", X_SWIFI_REMARS3"
+			+ ", LAT"
+			+ ", LNT"
+			+ ", WORK_DTTM"
+			+ " FROM WIFI"
+			+ " WHERE X_SWIFI_MGR_NO = ?";
 	
 	private static WifiDAO wifiDAO;
 	
@@ -178,17 +223,70 @@ public class WifiDAO {
 	}
 	
 	/**
-	 * 공공와이파이 서비스 위치 정보 목록 조회
+	 * 거리 오름차순으로 공공와이파이 서비스 위치 정보 목록 조회
+	 * @param lat
+	 * @param lnt
+	 * @param limit
 	 * @return
 	 */
-	public List<Wifi> getWifiList() {
+	public List<Wifi> getWifiListByLocation(double lat, double lnt, int limit) {
 		
-		System.out.println("===> JDBC getWifiList() 기능 처리");
+		System.out.println("===> JDBC getWifiListByLocation() 기능 처리");
 		List<Wifi> wifiList = new ArrayList<>();
 		
 		try {
 			conn = JDBCUtil.getConnection();
 			stmt = conn.prepareStatement(WIFI_LIST);
+			stmt.setDouble(1, lat);
+			stmt.setDouble(2, lnt);
+			stmt.setDouble(3, lat);
+			stmt.setInt(4, limit);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Wifi wifi = new Wifi();
+				double distance = Math.round(rs.getDouble("DISTANCE"));
+				wifi.setDistance(distance / 1.000f);
+				wifi.setX_SWIFI_MGR_NO(rs.getString("X_SWIFI_MGR_NO"));
+				wifi.setX_SWIFI_WRDOFC(rs.getString("X_SWIFI_WRDOFC"));
+				wifi.setX_SWIFI_MAIN_NM(rs.getString("X_SWIFI_MAIN_NM"));
+				wifi.setX_SWIFI_ADRES1(rs.getString("X_SWIFI_ADRES1"));
+				wifi.setX_SWIFI_ADRES2(rs.getString("X_SWIFI_ADRES2"));
+				wifi.setX_SWIFI_INSTL_FLOOR(rs.getString("X_SWIFI_INSTL_FLOOR"));
+				wifi.setX_SWIFI_INSTL_TY(rs.getString("X_SWIFI_INSTL_TY"));
+				wifi.setX_SWIFI_INSTL_MBY(rs.getString("X_SWIFI_INSTL_MBY"));
+				wifi.setX_SWIFI_SVC_SE(rs.getString("X_SWIFI_SVC_SE"));
+				wifi.setX_SWIFI_CMCWR(rs.getString("X_SWIFI_CMCWR"));
+				wifi.setX_SWIFI_CNSTC_YEAR(rs.getString("X_SWIFI_CNSTC_YEAR"));
+				wifi.setX_SWIFI_INOUT_DOOR(rs.getString("X_SWIFI_INOUT_DOOR"));
+				wifi.setX_SWIFI_REMARS3(rs.getString("X_SWIFI_REMARS3"));
+				wifi.setLAT(rs.getString("LAT"));
+				wifi.setLNT(rs.getString("LNT"));
+				wifi.setWORK_DTTM(rs.getString("WORK_DTTM"));
+				wifiList.add(wifi);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(rs, stmt, conn);
+		}
+		
+		return wifiList; 
+	}
+	
+	/**
+	 * 공공와이파이 서비스 위치 정보 목록 조회
+	 * @return
+	 */
+	public List<Wifi> getAllWifiList() {
+		
+		System.out.println("===> JDBC getAllWifiList() 기능 처리");
+		List<Wifi> wifiList = new ArrayList<>();
+		
+		try {
+			conn = JDBCUtil.getConnection();
+			stmt = conn.prepareStatement(WIFI_ALL_LIST);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -209,7 +307,6 @@ public class WifiDAO {
 				wifi.setLAT(rs.getString("LAT"));
 				wifi.setLNT(rs.getString("LNT"));
 				wifi.setWORK_DTTM(rs.getString("WORK_DTTM"));
-				
 				wifiList.add(wifi);
 			}
 			
@@ -220,6 +317,60 @@ public class WifiDAO {
 		}
 		
 		return wifiList; 
+	}
+	
+	/**
+	 * 관리번호를 통해 공공와이파이 서비스 위치 정보 목록 조회
+	 * @param lat
+	 * @param lnt
+	 * @param MgrNo 관리번호
+	 * @return
+	 */
+	public Wifi getWifiByMgrNo(double lat, double lnt, String MgrNo) {
+		
+		System.out.println("===> JDBC getWifiListByMgrNo() 기능 처리");
+
+		Wifi wifi = null;
+		
+		try {
+			conn = JDBCUtil.getConnection();
+			stmt = conn.prepareStatement(WIFI_DETAIL);
+			stmt.setDouble(1, lat);
+			stmt.setDouble(2, lnt);
+			stmt.setDouble(3, lat);
+			stmt.setString(4, MgrNo);
+			rs = stmt.executeQuery();
+			
+			wifi = new Wifi();
+			
+			while(rs.next()) {
+				double distance = Math.round(rs.getDouble("DISTANCE"));
+				wifi.setDistance(distance / 1.000f);
+				wifi.setX_SWIFI_MGR_NO(rs.getString("X_SWIFI_MGR_NO"));
+				wifi.setX_SWIFI_WRDOFC(rs.getString("X_SWIFI_WRDOFC"));
+				wifi.setX_SWIFI_MAIN_NM(rs.getString("X_SWIFI_MAIN_NM"));
+				wifi.setX_SWIFI_ADRES1(rs.getString("X_SWIFI_ADRES1"));
+				wifi.setX_SWIFI_ADRES2(rs.getString("X_SWIFI_ADRES2"));
+				wifi.setX_SWIFI_INSTL_FLOOR(rs.getString("X_SWIFI_INSTL_FLOOR"));
+				wifi.setX_SWIFI_INSTL_TY(rs.getString("X_SWIFI_INSTL_TY"));
+				wifi.setX_SWIFI_INSTL_MBY(rs.getString("X_SWIFI_INSTL_MBY"));
+				wifi.setX_SWIFI_SVC_SE(rs.getString("X_SWIFI_SVC_SE"));
+				wifi.setX_SWIFI_CMCWR(rs.getString("X_SWIFI_CMCWR"));
+				wifi.setX_SWIFI_CNSTC_YEAR(rs.getString("X_SWIFI_CNSTC_YEAR"));
+				wifi.setX_SWIFI_INOUT_DOOR(rs.getString("X_SWIFI_INOUT_DOOR"));
+				wifi.setX_SWIFI_REMARS3(rs.getString("X_SWIFI_REMARS3"));
+				wifi.setLAT(rs.getString("LAT"));
+				wifi.setLNT(rs.getString("LNT"));
+				wifi.setWORK_DTTM(rs.getString("WORK_DTTM"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(rs, stmt, conn);
+		}
+		
+		return wifi; 
 	}
 	
 }

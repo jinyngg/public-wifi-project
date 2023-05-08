@@ -5,6 +5,9 @@ import lombok.Data;
 @Data
 public class Wifi {
 
+	// @date 2023-05-06 추가
+	private double distance;			// 거리(Km)
+	
 	private String X_SWIFI_MGR_NO;		// 관리번호
 	private String X_SWIFI_WRDOFC;		// 자치구
 	private String X_SWIFI_MAIN_NM;		// 와이파이명
