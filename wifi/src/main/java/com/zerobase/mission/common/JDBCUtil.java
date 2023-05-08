@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 
 /**
  * JDBC 연결 관리 UTIL
- * @date 2023-04-24
- * @author jyjang
  */
 public class JDBCUtil {
 	
@@ -20,8 +18,6 @@ public class JDBCUtil {
 		try {
 			// mySql 호출
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			// @TODO 하드코딩 수정 필요
-//			return DriverManager.getConnection("jdbc:mysql://" + server + "/" + database, userName, password);
 			System.out.println("Connection Success");
 			return DriverManager.getConnection("jdbc:mysql://localhost/WIFI", "root", "root");
 			
