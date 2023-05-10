@@ -31,3 +31,10 @@
 ## ERD
 
 ![image](https://user-images.githubusercontent.com/96164211/236812562-ef738f6f-4b31-4b32-91c8-e1deae3e9216.png)
+
+---
+
+## 메모
+
+BOOKMARKGROUP PK 이름 수정 필요 
+1. ````BOOKMARK_NO```` -> ````BOOKMARKGROUP_NO````
